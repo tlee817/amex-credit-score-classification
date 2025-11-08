@@ -3,9 +3,6 @@ numpy
 xgboost
 scikit-learn
 joblib
+streamlit
 
 
-macOS/Apple Silicon note (if build fails):
-
-brew install libomp
-python3 -m pip install xgboost
