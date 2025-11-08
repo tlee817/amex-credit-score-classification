@@ -1,0 +1,11 @@
+pandas
+numpy
+xgboost
+scikit-learn
+joblib
+
+
+macOS/Apple Silicon note (if build fails):
+
+brew install libomp
+python3 -m pip install xgboost
