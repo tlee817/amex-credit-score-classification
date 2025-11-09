@@ -5,10 +5,9 @@ import gdown
 import os
 
 # BEFORE RUNNING LOCALLY:
-# Download test_clean.csv from GDrive/Amex1A/Data and store in the data/ directory
+# Download test_clean.csv from GDrive/Amex1A/Data and store in the data/ directory (create data directory if it doesn't exist)
 
-# --- MAIN APP LOGIC ---
-# App Specifications
+# --- LANDING PAGE ---
 st.title("💳 Credit Score Classification App")
 st.write("Select a page from the left sidebar.")
 

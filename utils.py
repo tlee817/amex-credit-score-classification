@@ -4,27 +4,35 @@ import joblib
 import pandas as pd
 import streamlit as st
 
-# Google Drive IDs
+
 FILE_ID_MODEL = "106e2YXB3MebGkndVCpJaqU7BYSfDMAN9"
 FILE_ID_FEATS = "1OmP2n47KFjQ7iRMaRl6BN8GKXmVPkjfo"
-
-# Local paths
 MODEL_PATH = "assets/final_model.pkl"
 FEAT_PATH  = "assets/final_features.csv"
 
 def download_model():
     st.sidebar.title("Developer Controls")
 
-    download_model = st.sidebar.checkbox(
+    # Checkbox controls session state
+    trigger = st.sidebar.checkbox(
         "Download latest model from Drive?",
-        value=False
+        key="download_trigger",
+        help="Re-fetch model weights and feature list from Google Drive"
     )
 
-    # Download only if user says so OR file doesn't exist
-    if download_model or not os.path.exists(MODEL_PATH):
-        st.warning("Downloading latest model from Google Drive…")
-        gdown.download(f"https://drive.google.com/uc?id={FILE_ID_MODEL}", MODEL_PATH, quiet=True)
-        gdown.download(f"https://drive.google.com/uc?id={FILE_ID_FEATS}", FEAT_PATH, quiet=True)
+    # If button clicked OR files missing
+    if trigger or not (os.path.exists(MODEL_PATH) and os.path.exists(FEAT_PATH)):
+        with st.spinner("Downloading model & features..."):
+            print("Downloading model.pkl…")
+            gdown.download(f"https://drive.google.com/uc?id={FILE_ID_MODEL}", MODEL_PATH, quiet=True)
+            print("Downloading final_features.csv…")
+            gdown.download(f"https://drive.google.com/uc?id={FILE_ID_FEATS}", FEAT_PATH, quiet=True)
+
+        st.sidebar.success("Model & features updated")
+        st.success("Download complete")
+        print("Download complete.")
+
+
 
 @st.cache_resource
 def load_model_and_features():
