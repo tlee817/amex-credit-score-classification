@@ -4,5 +4,6 @@ xgboost
 scikit-learn
 joblib
 streamlit
+gdown
 
 
