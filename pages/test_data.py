@@ -120,7 +120,7 @@ if st.session_state.view == "detail":
 else :
     st.header("Banker Credit Review Dashboard")
     with st.form("search_form"):
-        search = st.text_input("Search customers by ID, Name, or Age",
+        search = st.text_input("Search customers by ID, or Name",
                             value=st.session_state.search_value)
         submitted = st.form_submit_button("Search")
 
@@ -128,8 +128,7 @@ else :
         st.session_state.search_value = search
         st.session_state.results = test_df[
             test_df["Customer_ID"].astype(str).str.contains(search, case=False) |
-            test_df["Name"].astype(str).str.contains(search, case=False) |
-            test_df["Age"].astype(str).str.contains(search, case=False)
+            test_df["Name"].astype(str).str.contains(search, case=False)
         ]
 
     results = st.session_state.results  
