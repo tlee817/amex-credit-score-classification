@@ -1,0 +1,95 @@
+
+name: Deployment Validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  validate-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Check deployment prerequisites
+        run: |
+          echo "Validating deployment readiness for Streamlit Cloud"
+          
+          # Check required files exist
+          test -f app.py || (echo "ERROR: app.py not found" && exit 1)
+          test -f requirements.txt || (echo "ERROR: requirements.txt not found" && exit 1)
+          
+          # Verify requirements.txt has streamlit
+          grep -q "streamlit" requirements.txt || (echo "ERROR: streamlit not in requirements.txt" && exit 1)
+          
+          echo "All deployment prerequisites met"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Test Streamlit app syntax
+        run: |
+          echo "Testing Streamlit app syntax"
+          python -c "import ast; ast.parse(open('app.py').read())"
+          echo "app.py has valid Python syntax"
+
+      - name: Validate pages directory
+        run: |
+          if [ -d "pages" ]; then
+            echo "Found pages directory"
+            page_count=$(ls -1 pages/*.py 2>/dev/null | wc -l)
+            echo "Found $page_count page(s)"
+            
+            # Validate each page file
+            for page in pages/*.py; do
+              if [ -f "$page" ]; then
+                echo "Validating $(basename $page)"
+                python -c "import ast; ast.parse(open('$page').read())"
+              fi
+            done
+            echo "All pages validated successfully"
+          else
+            echo "No pages directory found (optional)"
+          fi
+
+      - name: Check for common deployment issues
+        run: |
+          echo "Checking for common deployment issues"
+          
+          # Check for hardcoded Windows paths
+          if grep -r "C:\\\\" . --include="*.py" 2>/dev/null; then
+            echo "WARNING: Found Windows-style paths (may cause issues on Linux)"
+          fi
+          
+          # Check for large files
+          large_files=$(find . -type f -size +100M 2>/dev/null | grep -v ".git" | grep -v ".venv" || true)
+          if [ -n "$large_files" ]; then
+            echo "WARNING: Found large files that may slow deployment:"
+            echo "$large_files"
+          fi
+          
+          echo "Deployment checks complete"
+
+      - name: Deployment summary
+        run: |
+          echo ""
+          echo "Deployment Validation passed"
+          echo ""
+          echo "App is ready for Streamlit Cloud deployment"
+          echo ""
+          echo "To deploy:"
+          echo "  1. Go to https://share.streamlit.io"
+          echo "  2. Connect this GitHub repository"
+          echo "  3. Streamlit Cloud will auto-deploy on push to main"
+          echo ""

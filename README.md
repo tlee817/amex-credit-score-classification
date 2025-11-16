@@ -40,3 +40,29 @@ project_root/data/test_clean.csv
 streamlit run app.py
 ```
 
+## Troubleshooting: XGBoost on macOS
+
+If you see an error like "libxgboost.dylib could not be loaded" that references a missing `libomp.dylib`, macOS usually needs the OpenMP runtime installed. On macOS (Intel or Apple Silicon) the quickest fix is:
+
+1. Install libomp with Homebrew:
+
+```bash
+brew install libomp
+```
+
+2. Activate your project virtualenv and verify XGBoost loads:
+
+```bash
+source .venv/bin/activate
+python -c "import xgboost; print('xgboost', xgboost.__version__)"
+```
+
+If `brew` is not available, the alternative is to use a conda environment (conda installs OpenMP/compilers) or reinstall xgboost from a wheel that bundles runtimes. If problems persist, try:
+
+```bash
+pip uninstall -y xgboost
+pip install --no-cache-dir xgboost
+```
+
+Add this section to help other developers who run into the same macOS XGBoost / libomp issue.
+
