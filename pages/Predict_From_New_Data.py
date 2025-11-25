@@ -23,7 +23,6 @@ def record(feature_name):
         user_input_features.add(feature_name)
 
 # --- MAIN LOGIC ---
-st.set_page_config(page_title="Predict from New Input")
 download_model()
 model, selected_features = load_model_and_features()
 st.write("Enter customer details below to predict credit score standing (Good / Standard / Poor).")
