@@ -1,17 +1,45 @@
 # Amex: Credit Score Classification
-This project aims to develop a supervised machine learning model that classifies customers into credit score brackets using their historical credit and bank data. The main goal is to automate the credit score segmentation process, reducing manual work and ensuring consistent, data-driven assessments. 
+
+This project aims to develop a supervised machine learning model that classifies customers into credit score brackets using their historical credit and bank data. The main goal is to automate the credit score segmentation process, reducing manual work and ensuring consistent, data-driven assessments.
+
+## Disclaimer
+
+All dataset records in this repository are synthetic and do not represent real individuals, accounts, or financial activity. Predictions are for demonstration only and should not be used for actual credit decisions.
+
+## App Overview
+
+- **Predict From Existing Data** : This page is for exploring credit scores of existing customers.
+
+  Enter or pick a customer ID to:
+
+  1. See a list of matching customers.
+  2. Select one to view their monthly financial timeline.
+  3. Generate a credit standing prediction (Poor / Standard / Good) for each month with probability indicators.
+
+- **Predict From New Data** : Use this when evaluating a hypothetical or newly onboarded customer by filling out a short form (age, income, debts, counts of cards/loans, etc.).
 
 ---
 
 ## Requirements
 
 - Python 3.9+
-- Install dependencies:
+- Install dependencies after creating a virtual environment.
 
-```bash
+### Setup (Windows PowerShell)
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+### Setup (macOS / Linux Bash or zsh)
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 ## Before Running Locally
 
@@ -32,7 +60,6 @@ Move the downloaded file into:
 ```
 project_root/data/test_clean.csv
 ```
-
 
 ## Run the Streamlit App
 
@@ -65,4 +92,3 @@ pip install --no-cache-dir xgboost
 ```
 
 Add this section to help other developers who run into the same macOS XGBoost / libomp issue.
-
