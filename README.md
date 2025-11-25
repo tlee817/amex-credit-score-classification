@@ -2,11 +2,15 @@
 
 This project aims to develop a supervised machine learning model that classifies customers into credit score brackets using their historical credit and bank data. The main goal is to automate the credit score segmentation process, reducing manual work and ensuring consistent, data-driven assessments.
 
+![GUI Demo](assets/demo_video.gif)
+
+[Click here for full demo video](https://youtu.be/fZO_7D8GT_8)
+
 ## Disclaimer
 
 All dataset records in this repository are synthetic and do not represent real individuals, accounts, or financial activity. Predictions are for demonstration only and should not be used for actual credit decisions.
 
-## App Overview
+## Overview
 
 - **Predict From Existing Data** : This page is for exploring credit scores of existing customers.
 
@@ -17,6 +21,7 @@ All dataset records in this repository are synthetic and do not represent real i
   3. Generate a credit standing prediction (Poor / Standard / Good) for each month with probability indicators.
 
 - **Predict From New Data** : Use this when evaluating a hypothetical or newly onboarded customer by filling out a short form (age, income, debts, counts of cards/loans, etc.).
+- **ml_pipeline_notebook** : Consists of the machine learning pipeline from data preprocessing to model training & evaluation.
 
 ---
 
@@ -25,7 +30,7 @@ All dataset records in this repository are synthetic and do not represent real i
 - Python 3.9+
 - Install dependencies after creating a virtual environment.
 
-### Setup (Windows PowerShell)
+#### Setup (Windows PowerShell)
 
 ```powershell
 python -m venv .venv
@@ -33,7 +38,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### Setup (macOS / Linux Bash or zsh)
+#### Setup (macOS / Linux Bash or zsh)
 
 ```bash
 python3 -m venv .venv
@@ -43,17 +48,17 @@ pip install -r requirements.txt
 
 ## Before Running Locally
 
-### 1. Download `test_clean.csv`
+#### 1. Download `test_clean.csv`
 
 Download from Amex1A/Data in Google Drive
 
-### 2. Create a `data/` directory (if not present)
+#### 2. Create a `data/` directory (if not present)
 
 ```bash
 mkdir data
 ```
 
-### 3. Place the file in the directory
+#### 3. Place the file in the directory
 
 Move the downloaded file into:
 
