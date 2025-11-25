@@ -136,7 +136,7 @@ if st.button("Predict"):
     print(list(df_ordered.columns))
     print(f"\nShape: {df_ordered.shape}") # expected (1, 39)
 
-    pred_class = model.predict(df)[0]
+    pred_class = model.predict(df_ordered)[0]
     label_map = {
     0: "Poor",
     1: "Standard",

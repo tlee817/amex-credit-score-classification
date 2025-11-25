@@ -12,10 +12,15 @@ def safe_set(row_dict, feature_name, value):
     if feature_name in selected_features:
         row_dict[feature_name] = value
 
+user_input_features = set()
+def record(feature_name):
+    if feature_name in selected_features:
+        user_input_features.add(feature_name)
 
 download_model()
 model, selected_features = load_model_and_features()
 st.write("Enter customer details below to predict credit score standing (Good / Standard / Poor).")
+
 # User input fields
 age = st.number_input(
     "Age",
@@ -27,9 +32,10 @@ age = st.number_input(
 
 salary = st.number_input(
     "Annual Income ($)",
-    min_value=0,
-    value=50000,
-    step=1000,
+    min_value=0.0,
+    value=50000.0,
+    step=1000.0,
+    format="%.2f",
     help="Applicant's annual income before taxes."
 )
 
@@ -49,18 +55,20 @@ num_loans = st.number_input(
 
 debt = st.number_input(
     "Outstanding Debt ($)",
-    min_value=0,
-    value=0,
-    step=500,
+    min_value=0.0,
+    value=0.0,
+    step=500.0,
+    format="%.2f",
     help="Total outstanding debt across all loans and credit cards."
 )
 
 interest_rate = st.number_input(
     "Interest Rate (%)",
-    min_value=0,
-    max_value=100,
-    value=10,
-    step=1,
+    min_value=0.0,
+    max_value=100.0,
+    value=10.0,
+    step=1.0,
+    format="%.2f",
     help="Average interest rate applied across the customer's credit products."
 )
 
@@ -87,22 +95,24 @@ credit_history_age = st.number_input(
 
 changed_credit_limit = st.number_input(
     "Changed Credit Limit ($)",
-    min_value=0,
-    step=10,
-    value=0,
+    min_value=0.0,
+    step=10.0,
+    value=0.0,
+    format="%.2f",
     help="Change in the customer's credit limit."
 )
 
+payment_behaviour_options = [
+    "high_spent_medium_value_payments",
+    "low_spent_small_value_payments",
+    "high_spent_large_value_payments",
+    "low_spent_large_value_payments",
+    "low_spent_medium_value_payments",
+    "high_spent_small_value_payments"
+]
 payment_behaviour = st.selectbox(
     "Payment Behaviour",
-    [
-        "high_spent_medium_value_payments",
-        "low_spent_small_value_payments",
-        "high_spent_large_value_payments",
-        "low_spent_large_value_payments",
-        "low_spent_medium_value_payments",
-        "high_spent_small_value_payments"
-    ],
+    payment_behaviour_options,
     help="Spending and repayment pattern derived from historical transactions."
 )
 
@@ -144,6 +154,7 @@ total_emi_per_month = st.number_input(
     min_value=0.0,
     step=100.0,
     value=0.0,
+    format="%.2f",
     help="Total monthly EMI payments made by the customer."
 )
 
@@ -171,6 +182,7 @@ month_num = st.number_input(
     value=1,
     help="Numeric month representation (1 for January, 12 for December)."
 )
+
 at_risk_flag = st.number_input(
     "At Risk Flag (0 = No, 1 = Yes)",
     min_value=0,
@@ -180,29 +192,28 @@ at_risk_flag = st.number_input(
     help="Indicates whether the customer is currently considered at risk (1 = Yes, 0 = No)."
 )
 
-
 # Build a single-row feature dict with zeros for all expected features
 row = {feat: 0 for feat in selected_features}
 
 
 # Fill numeric fields 
-safe_set(row, "Age", age)
-safe_set(row, "Annual_Income", salary)
-safe_set(row, "Num_Credit_Card", num_credit_cards)
-safe_set(row, "Num_of_Loan", num_loans)
-safe_set(row, "Num_of_Delayed_Payment", num_delayed_payments)
-safe_set(row, "Num_Credit_Inquiries", num_credit_inquiries)
-safe_set(row, "Credit_History_Age", credit_history_age)
-safe_set(row, "Outstanding_Debt", debt)
-safe_set(row, "Interest_Rate", interest_rate)
-safe_set(row, "Changed_Credit_Limit", changed_credit_limit)
-safe_set(row, "Payment_of_Min_Amount", payment_min_map[payment_min_amount])
-safe_set(row, "Num_Bank_Accounts", num_bank_accounts)
-safe_set(row, "Total_EMI_per_month", total_emi_per_month)
-safe_set(row, "Delay_from_due_date", delay_from_due_date)
-safe_set(row, "Monthly_Salary_Report_Count", monthly_salary_report_count)
-safe_set(row, "Month_Num", month_num)
-safe_set(row, "At_Risk_Flag", at_risk_flag)
+safe_set(row, "Age", age); record("Age")
+safe_set(row, "Annual_Income", salary); record("Annual_Income")
+safe_set(row, "Num_Credit_Card", num_credit_cards); record("Num_Credit_Card")
+safe_set(row, "Num_of_Loan", num_loans); record("Num_of_Loan")
+safe_set(row, "Num_of_Delayed_Payment", num_delayed_payments); record("Num_of_Delayed_Payment")
+safe_set(row, "Num_Credit_Inquiries", num_credit_inquiries); record("Num_Credit_Inquiries")
+safe_set(row, "Credit_History_Age", credit_history_age); record("Credit_History_Age")
+safe_set(row, "Outstanding_Debt", debt); record("Outstanding_Debt")
+safe_set(row, "Interest_Rate", interest_rate); record("Interest_Rate")
+safe_set(row, "Changed_Credit_Limit", changed_credit_limit); record("Changed_Credit_Limit")
+safe_set(row, "Payment_of_Min_Amount", payment_min_map[payment_min_amount]); record("Payment_of_Min_Amount")
+safe_set(row, "Num_Bank_Accounts", num_bank_accounts); record("Num_Bank_Accounts")
+safe_set(row, "Total_EMI_per_month", total_emi_per_month); record("Total_EMI_per_month")
+safe_set(row, "Delay_from_due_date", delay_from_due_date); record("Delay_from_due_date")
+safe_set(row, "Monthly_Salary_Report_Count", monthly_salary_report_count); record("Monthly_Salary_Report_Count")
+safe_set(row, "Month_Num", month_num); record("Month_Num")
+safe_set(row, "At_Risk_Flag", at_risk_flag); record("At_Risk_Flag")
 
 # Occupation dropdown -> one-hot columns
 occupation_cols = [c for c in selected_features if c.startswith("Occupation_")]
@@ -210,45 +221,42 @@ pretty_to_key = {c.replace("Occupation_", "").replace("_", " "): c for c in occu
 pretty_options = ["(none)"] + sorted(pretty_to_key.keys())
 occ_choice = st.selectbox("Occupation", options=pretty_options, index=0)
 
-# Set occupation one-hots
-for k in occupation_cols:
-    safe_set(row, k, 0)
+for col in occupation_cols:
+    safe_set(row, col, 0)
+    record(col)
 if occ_choice != "(none)":
-    safe_set(row, pretty_to_key[occ_choice], 1)
+    chosen_occ = pretty_to_key[occ_choice]
+    safe_set(row, chosen_occ, 1)  
+    record(chosen_occ)           
 
-#------------------------------------
 # Credit_mix dropdown
 credit_mix_cols = [c for c in selected_features if c.startswith("Credit_Mix_")]
 for col in credit_mix_cols:
     safe_set(row, col, 0)
-
-# Set the chosen one to 1 directly
+    record(col)
 if credit_mix in credit_mix_cols:
     safe_set(row, credit_mix, 1)
+    record(credit_mix)
 
-#------------------------------------
-# Loan Type
-# One-hot encode selected loan types
+# Loan Type (multiselect)
 loan_cols = [c for c in selected_features if c.endswith(" Loan")]
-
-# Initialize all to 0
 for col in loan_cols:
     safe_set(row, col, 0)
-
-# Mark selected loans as 1
+    record(col)
 for loan in loan_types:
     if loan in loan_cols:
         safe_set(row, loan, 1)
-#------------------------------------
+        record(loan)
 
-
-# encode payment behavior
+# Payment behaviour
 payment_cols = [c for c in selected_features if c.startswith("Payment_Behaviour_")]
-for k in payment_cols:
-    safe_set(row, k, 0)
+for col in payment_cols:
+    safe_set(row, col, 0)
+    record(col)
 behaviour_col = "Payment_Behaviour_" + payment_behaviour
 if behaviour_col in payment_cols:
     safe_set(row, behaviour_col, 1)
+    record(behaviour_col)
 
 # Prediction
 if st.button("Predict"):
@@ -261,7 +269,7 @@ if st.button("Predict"):
     print(list(df_ordered.columns))
     print(f"\nShape: {df_ordered.shape}") # expected (1, 39)
 
-    pred_class = model.predict(df)[0]
+    pred_class = model.predict(df_ordered)[0]
     label_map = {
     0: "Poor",
     1: "Standard",
@@ -277,4 +285,10 @@ if st.button("Predict"):
     for cls, p in probabilities.items():
         st.write(f"**{cls}:** {p:.2%}")
         st.progress(float(p))
-        
+
+
+# --- DEBUG ---  
+missing_user_input_features = set(selected_features) - user_input_features
+print(f"\nUser-input features count: {len(user_input_features)}")
+print(f"Features not directly set by user (remain default/zeroed): {len(missing_user_input_features)}")
+print(f"Missing list: {sorted(missing_user_input_features)}")
