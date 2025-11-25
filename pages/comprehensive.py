@@ -7,16 +7,23 @@ import os
 from utils import download_model, load_model_and_features
 
 # --- HELPER ----
-# Ensure only features that are in selected_features are assigned a value
 def safe_set(row_dict, feature_name, value):
+    '''
+    Ensure only features that are in selected_features are assigned a value
+    '''
     if feature_name in selected_features:
         row_dict[feature_name] = value
 
 user_input_features = set()
 def record(feature_name):
+    '''
+    Store a set of input features for debugging purposes
+    '''
     if feature_name in selected_features:
         user_input_features.add(feature_name)
 
+# --- MAIN LOGIC ---
+st.set_page_config(page_title="Predict from New Input")
 download_model()
 model, selected_features = load_model_and_features()
 st.write("Enter customer details below to predict credit score standing (Good / Standard / Poor).")
@@ -116,20 +123,22 @@ payment_behaviour = st.selectbox(
     help="Spending and repayment pattern derived from historical transactions."
 )
 
+credit_mix_options = [
+    "Credit_Mix_Unknown",
+    "Credit_Mix_Good",
+    "Credit_Mix_Standard",
+    "Credit_Mix_Bad"
+]
 credit_mix = st.selectbox(
     "Credit Mix",
-    [
-        "Credit_Mix_Unknown",
-        "Credit_Mix_Good",
-        "Credit_Mix_Standard",
-        "Credit_Mix_Bad"
-    ],
+    credit_mix_options,
     help="Overall quality of the applicant's credit history."
 )
 
+loan_options = ["Credit-Builder Loan", "Personal Loan", "Payday Loan", "Auto Loan"]
 loan_types = st.multiselect(
     "Select all applicable loan types:",
-    ["Credit-Builder Loan", "Personal Loan", "Payday Loan", "Auto Loan"],
+    loan_options,
     help="Select all loan types currently held by the customer."
 )
 
@@ -138,7 +147,6 @@ payment_min_amount = st.selectbox(
     ["Yes", "No", "NM"],
     help="Indicates whether the customer pays at least the minimum amount due each month. 'NM' means not mentioned."
 )
-# Map selections to numeric values
 payment_min_map = {"Yes": 1, "No": 0, "NM": np.nan}
 
 num_bank_accounts = st.number_input(
@@ -183,20 +191,10 @@ month_num = st.number_input(
     help="Numeric month representation (1 for January, 12 for December)."
 )
 
-at_risk_flag = st.number_input(
-    "At Risk Flag (0 = No, 1 = Yes)",
-    min_value=0,
-    max_value=1,
-    step=1,
-    value=0,
-    help="Indicates whether the customer is currently considered at risk (1 = Yes, 0 = No)."
-)
-
-# Build a single-row feature dict with zeros for all expected features
+# Initialize all features from the csv file to 0
 row = {feat: 0 for feat in selected_features}
 
-
-# Fill numeric fields 
+# Fill numeric fields and record for debugging purposes
 safe_set(row, "Age", age); record("Age")
 safe_set(row, "Annual_Income", salary); record("Annual_Income")
 safe_set(row, "Num_Credit_Card", num_credit_cards); record("Num_Credit_Card")
@@ -213,14 +211,12 @@ safe_set(row, "Total_EMI_per_month", total_emi_per_month); record("Total_EMI_per
 safe_set(row, "Delay_from_due_date", delay_from_due_date); record("Delay_from_due_date")
 safe_set(row, "Monthly_Salary_Report_Count", monthly_salary_report_count); record("Monthly_Salary_Report_Count")
 safe_set(row, "Month_Num", month_num); record("Month_Num")
-safe_set(row, "At_Risk_Flag", at_risk_flag); record("At_Risk_Flag")
 
-# Occupation dropdown -> one-hot columns
+# Handle categorical features
 occupation_cols = [c for c in selected_features if c.startswith("Occupation_")]
 pretty_to_key = {c.replace("Occupation_", "").replace("_", " "): c for c in occupation_cols}
 pretty_options = ["(none)"] + sorted(pretty_to_key.keys())
 occ_choice = st.selectbox("Occupation", options=pretty_options, index=0)
-
 for col in occupation_cols:
     safe_set(row, col, 0)
     record(col)
@@ -229,7 +225,6 @@ if occ_choice != "(none)":
     safe_set(row, chosen_occ, 1)  
     record(chosen_occ)           
 
-# Credit_mix dropdown
 credit_mix_cols = [c for c in selected_features if c.startswith("Credit_Mix_")]
 for col in credit_mix_cols:
     safe_set(row, col, 0)
@@ -238,17 +233,14 @@ if credit_mix in credit_mix_cols:
     safe_set(row, credit_mix, 1)
     record(credit_mix)
 
-# Loan Type (multiselect)
 loan_cols = [c for c in selected_features if c.endswith(" Loan")]
 for col in loan_cols:
     safe_set(row, col, 0)
     record(col)
-for loan in loan_types:
-    if loan in loan_cols:
-        safe_set(row, loan, 1)
-        record(loan)
+if loan_types in loan_cols:
+        safe_set(row, loan_types, 1)
+        record(loan_types)
 
-# Payment behaviour
 payment_cols = [c for c in selected_features if c.startswith("Payment_Behaviour_")]
 for col in payment_cols:
     safe_set(row, col, 0)
@@ -259,16 +251,9 @@ if behaviour_col in payment_cols:
     record(behaviour_col)
 
 # Prediction
+df = pd.DataFrame([row])
+df_ordered = df[selected_features]
 if st.button("Predict"):
-    df = pd.DataFrame([row])
-    df_ordered = df[selected_features]
-
-    print("\n--- BEFORE REORDERING ---")
-    print(list(df.columns))
-    print("\n--- AFTER REORDERING ---")
-    print(list(df_ordered.columns))
-    print(f"\nShape: {df_ordered.shape}") # expected (1, 39)
-
     pred_class = model.predict(df_ordered)[0]
     label_map = {
     0: "Poor",
@@ -287,8 +272,22 @@ if st.button("Predict"):
         st.progress(float(p))
 
 
-# --- DEBUG ---  
+# --- DEBUGGING STATEMENTS ---  
+print("\n--- BEFORE REORDERING ---")
+print(list(df.columns))
+print("\n--- AFTER REORDERING ---")
+print(list(df_ordered.columns))
+print(f"\nShape: {df_ordered.shape}") # expected (1, 39)
+
 missing_user_input_features = set(selected_features) - user_input_features
 print(f"\nUser-input features count: {len(user_input_features)}")
 print(f"Features not directly set by user (remain default/zeroed): {len(missing_user_input_features)}")
 print(f"Missing list: {sorted(missing_user_input_features)}")
+
+
+# NOTE : HANDLING AT_RISK_FLAG
+# Temporarily removed At_Risk_Flag from user input as it cannot be calculated
+# from a single input. Either retrain the model or modify the UI in a way that
+# works only for existing customer, not new customers, so that there are
+# historical data. This will be mentioned in the Challenges in the slides
+# as all the members in the team have reached computational limits.
