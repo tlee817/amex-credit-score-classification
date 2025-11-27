@@ -162,6 +162,10 @@ Add this section to help other developers who run into the same macOS XGBoost / 
 - ROC AUC (per class): >0.89 for all (indicates strong rank ordering)
 - Precision-Recall: Class 1 (Standard) shows highest Average Precision (~0.92+), Classes 0 (Poor) and 2 (Good) stable (~0.82–0.90 range)
 
+  <img src="assets/image.png" alt="Model performance plot 1" width="600" />
+  <img src="assets/image-1.png" alt="Model performance plot 2" width="600" />
+
+
 ## 🚀 **Next Steps**
 
 ### Known Limitations
