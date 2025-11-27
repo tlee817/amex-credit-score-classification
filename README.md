@@ -14,10 +14,12 @@
 
 ## 🎯 **Project Highlights**
 
-- Developed a machine learning model using `[model type/technique]` to address `[challenge project task]`.
-- Achieved `[key metric or result]`, demonstrating `[value or impact]` for `[host company]`.
-- Generated actionable insights to inform business decisions at `[host company or stakeholders]`.
-- Implemented `[specific methodology]` to address industry constraints or expectations.
+- Developed a machine learning model using Random Forest and XGBoost to address credit score classification (Poor / Standard / Good).
+- Achieved validation accuracy ≈0.83, macro F1 ≈0.83, AUC >0.89 (XGBoost) strengthening reliability of credit segment decisions.
+- Generated actionable insights by analyzing ROC / PR curves, confusion matrix, and 6‑month feature trends to refine early risk thresholds.
+- Implemented class imbalance mitigation (class weighting / SMOTE), handling outliers, and handling invalid data (sentinel, missing) to address industry expectations.
+- Delivered a Streamlit app with two workflows (existing customer timeline exploration and new input form) to serve the trained model and return real‑time class probabilities.
+- Automated quality & deployment via GitHub Actions: CI (flake8, smoke import tests), Dependabot dependency updates, and deployment readiness validation workflow.
 
 ## 🏗️ **Project Overview**
 
@@ -38,7 +40,7 @@ All dataset records in this repository are synthetic and do not represent real i
   Enter or pick a customer ID to:
 
   1. See a list of matching customers.
-  2. Select one to v\*iew their monthly financial timeline.
+  2. Select one to view their monthly financial timeline.
   3. Generate a credit standing prediction (Poor / Standard / Good) for each month with probability indicators.
 
 - **Predict From New Data** : Use this when evaluating a hypothetical or newly onboarded customer by filling out a short form (age, income, debts, counts of cards/loans, etc.).
@@ -51,8 +53,8 @@ All dataset records in this repository are synthetic and do not represent real i
 To clone this repository and navigate into the project directory, run:
 
 ```bash
-git clone
-cd
+git clone https://github.com/tlee817/amex-credit-score-classification.git
+cd amex-credit-score-classification
 ```
 
 ### Installation
@@ -130,8 +132,6 @@ pip install --no-cache-dir xgboost
 
 Add this section to help other developers who run into the same macOS XGBoost / libomp issue.
 
----
-
 ## 📊 **Data Exploration**
 
 **You might consider describing the following (as applicable):**
@@ -145,8 +145,6 @@ Add this section to help other developers who run into the same macOS XGBoost / 
 
 - Plots, charts, heatmaps, feature visualizations, sample dataset images
 
----
-
 ## 🧠 **Model Development**
 
 **You might consider describing the following (as applicable):**
@@ -155,47 +153,38 @@ Add this section to help other developers who run into the same macOS XGBoost / 
 - Feature selection and Hyperparameter tuning strategies
 - Training setup (e.g., % of data for training/validation, evaluation metric, baseline performance)
 
----
-
 ## 📈 **Results & Key Findings**
 
-**You might consider describing the following (as applicable):**
+### Performance Summary (Validation Set)
 
-- Performance metrics (e.g., Accuracy, F1 score, RMSE)
-- How your model performed
-- Insights from evaluating model fairness
-
-**Potential visualizations to include:**
-
-- Confusion matrix, precision-recall curve, feature importance plot, prediction distribution, outputs from fairness or explainability tools
-
----
+- Overall Accuracy: ~0.83
+- Macro F1: ~0.83 (balanced across classes despite class size differences)
+- ROC AUC (per class): >0.89 for all (indicates strong rank ordering)
+- Precision-Recall: Class 1 (Standard) shows highest Average Precision (~0.92+), Classes 0 (Poor) and 2 (Good) stable (~0.82–0.90 range)
 
 ## 🚀 **Next Steps**
 
-**You might consider addressing the following (as applicable):**
+### Known Limitations
 
-- What are some of the limitations of your model?
-- What would you do differently with more time/resources?
-- What additional datasets or techniques would you explore?
+- **Month Feature Leakage**: The temporal index feature Month was inadvertently included during training, introducing potential leakage (model may partially learn position in timeline rather than underlying behavior). Retraining without Month was attempted but constrained by available compute; current results are reported with this caveat.
+- **At_Risk_Flag Availability**: The engineered At_Risk_Flag (derived from historical delay_from_due_date patterns) is not exposed in the “Predict From New Data” form because single‑month inputs lack the required history. It is retained only for existing customers in "Predict From Existing Data". Future revision: redesign new‑customer flow to accept a short recent history window or retrain excluding this feature for consistency.
 
----
+### Planned Improvements
+
+- **Month Feature Leakage**: Retrain the model to ensure that model performance is solely driven by customer attributes
+- **At_Risk_Flag Availability**: redesign new‑customer flow to accept a short recent history window or retrain excluding this feature for consistency.
 
 ## 📝 **License**
 
-If applicable, indicate how your project can be used by others by specifying and linking to an open source license type (e.g., MIT, Apache 2.0). Make sure your Challenge Advisor approves of the selected license type.
-
-**Example:**
 This project is licensed under the MIT License.
 
----
+## 📄 **References**
 
-## 📄 **References** (Optional but encouraged)
+- Break Through Tech @ Cornell Tech – ML Foundations Course Materials
+- Streamlit Documentation. https://docs.streamlit.io/
+- Hands on Machine Learning: https://bradleyboehmke.github.io/HOML/gbm.html#xgboost
 
-Cite relevant papers, articles, or resources that supported your project.
+## 🙏 **Acknowledgements**
 
----
-
-## 🙏 **Acknowledgements** (Optional but encouraged)
-
-Thank your Challenge Advisor, host company representatives, TA, and others who supported your project.
+- **Jenna Hunte** – Provided structured weekly feedback, timeline guidance, and consistent mentorship supporting delivery quality and pace.
+- **Saurabh Gupta** – Advised on ML pipeline design, clarified technical challenges, and set clear milestone objectives.
