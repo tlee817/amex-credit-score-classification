@@ -147,9 +147,13 @@ Add this section to help other developers who run into the same macOS XGBoost / 
 
 ## 🧠 **Model Development**
 
-**You might consider describing the following (as applicable):**
+### Models
 
-- Model(s) used (e.g., CNN with transfer learning, regression models)
+- Baselines: Logistic Regression, Decision Tree
+- Ensembles: Random Forest, XGBoost
+
+TODO
+
 - Feature selection and Hyperparameter tuning strategies
 - Training setup (e.g., % of data for training/validation, evaluation metric, baseline performance)
 
@@ -165,13 +169,16 @@ Add this section to help other developers who run into the same macOS XGBoost / 
   <img src="assets/image.png" alt="Model performance plot 1" width="600" />
   <img src="assets/image-1.png" alt="Model performance plot 2" width="600" />
 
+  ### Key takeaway
+
+  - Misclassifications concentrate on adjacent classes, especially Standard ↔ Poor (and Standard ↔ Good), with very few direct Poor ↔ Good errors.
 
 ## 🚀 **Next Steps**
 
 ### Known Limitations
 
 - **Month Feature Leakage**: The temporal index feature Month was inadvertently included during training, introducing potential leakage (model may partially learn position in timeline rather than underlying behavior). Retraining without Month was attempted but constrained by available compute; current results are reported with this caveat.
-- **At_Risk_Flag Availability**: The engineered At_Risk_Flag (derived from historical delay_from_due_date patterns) is not exposed in the “Predict From New Data” form because single‑month inputs lack the required history. It is retained only for existing customers in "Predict From Existing Data". Future revision: redesign new‑customer flow to accept a short recent history window or retrain excluding this feature for consistency.
+- **At_Risk_Flag Availability**: The engineered At_Risk_Flag (derived from historical delay_from_due_date patterns) is not exposed in the “Predict From New Data” form because single‑month inputs lack the required history. It is retained only for existing customers in "Predict From Existing Data".
 
 ### Planned Improvements
 
