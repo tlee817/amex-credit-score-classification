@@ -134,44 +134,67 @@ Add this section to help other developers who run into the same macOS XGBoost / 
 
 ## 📊 **Data Exploration**
 
-**You might consider describing the following (as applicable):**
+### **Dataset Overview**
+- **Origin:** Synthetic dataset created by American Express to resemble real-world credit and financial behavior.
+- **Format & Size:** CSV files with monthly records per customer; 100k entries in the training set with 28 features.
+- **Type of Data:** Mixed numeric and categorical fields describing income, loans, payment behavior, credit history, and monthly financial activity.
 
-- The dataset(s) used: origin, format, size, type of data
-- Data exploration and preprocessing approaches
-- Insights from your Exploratory Data Analysis (EDA)
-- Challenges and assumptions when working with the dataset(s)
+### **EDA Insights**
+- Target classes showed **moderate imbalance** (Standard ~53%, Poor ~29%, Good ~18%).
+- Many numeric columns were stored as strings with underscores, hyphens, or missing tokens.
+- Outliers and domain-inconsistent values were common (e.g., negative delayed payments, unrealistic age).
 
-**Potential visualizations to include:**
-
-- Plots, charts, heatmaps, feature visualizations, sample dataset images
+### **Preprocessing Approach**
+- Imputed missing values using customer-level medians/modes.
+- Cleaned invalid entries using domain-informed rules (e.g., correcting negative delays).
+- Applied IQR-based outlier handling or winsorization for skewed numeric features.
+- Ensured alignment between training and test sets, removing ID-like fields that do not contribute to prediction.
 
 ## 🧠 **Model Development**
+### **Model**
 
-### Models
+- **Baselines:** Logistic Regression, Decision Tree  
+- **Ensembles:** Random Forest, XGBoost  
+- **Training Setup:** 80/20 split of `train.csv` for training and validation  
+- **Evaluation Metrics:** Confusion matrix, ROC–AUC, and Precision–Recall curves
 
-- Baselines: Logistic Regression, Decision Tree
-- Ensembles: Random Forest, XGBoost
+### **Hyperparameter Tuning**
 
-TODO
+- Applied a two-stage tuning process:  
+  - **Broad Search:** RandomizedSearchCV over a wide parameter space (e.g., `n_estimators`, `max_depth`, `learning_rate`, `subsample`, `colsample_bytree`, `gamma`, `reg_alpha`, `reg_lambda`).  
+  - **Fine Search:** Narrowed ranges around Stage-1 best parameters for precise optimization.  
+- Tuned parameters included depth, learning rate, number of trees, sampling rates, and regularization strength.  
+- Final hyperparameters were selected using cross-validation with macro F1 as the scoring metric.
 
-- Feature selection and Hyperparameter tuning strategies
-- Training setup (e.g., % of data for training/validation, evaluation metric, baseline performance)
+### **Feature Selection**
+
+- Used XGBoost feature importance rankings to identify key features.  
+- Evaluated multiple importance thresholds (0.005–0.01) using 5-fold CV.  
+- Selected the threshold with the highest macro F1 and retrained the final model using only the most informative features.
+
+### **Class Imbalance Handling**
+
+- The target classes (Poor / Standard / Good) were moderately imbalanced.  
+- Addressed this using **class weighting** during training and experimented with SMOTE on the training split to improve minority-class recall.  
+- Macro F1 was used as the primary evaluation metric to ensure balanced performance across all classes.
+
 
 ## 📈 **Results & Key Findings**
 
 ### Performance Summary (Validation Set)
-
-- Overall Accuracy: ~0.83
-- Macro F1: ~0.83 (balanced across classes despite class size differences)
-- ROC AUC (per class): >0.89 for all (indicates strong rank ordering)
-- Precision-Recall: Class 1 (Standard) shows highest Average Precision (~0.92+), Classes 0 (Poor) and 2 (Good) stable (~0.82–0.90 range)
+- **Accuracy:** ~0.83  
+- **Macro F1:** ~0.83 (well-balanced across all three classes)  
+- **ROC AUC:** >0.89 for every class  
+- **Precision–Recall:**  
+  - Class 1 (**Standard**) achieves the highest Average Precision (~0.92+)  
+  - Classes 0 (**Poor**) and 2 (**Good**) also remain stable (~0.82–0.90)
 
   <img src="assets/image.png" alt="Model performance plot 1" width="600" />
   <img src="assets/image-1.png" alt="Model performance plot 2" width="600" />
 
-  ### Key takeaway
-
-  - Misclassifications concentrate on adjacent classes, especially Standard ↔ Poor (and Standard ↔ Good), with very few direct Poor ↔ Good errors.
+  ### Key takeaways
+  - Most misclassifications occur **between adjacent credit tiers** (Standard ↔ Poor or Standard ↔ Good).
+  - **Direct Poor ↔ Good confusion is rare**, indicating the model learns an ordered structure rather than random class separation.
 
 ## 🚀 **Next Steps**
 
@@ -197,5 +220,8 @@ This project is licensed under the MIT License.
 
 ## 🙏 **Acknowledgements**
 
-- **Jenna Hunte** – Provided structured weekly feedback, timeline guidance, and consistent mentorship supporting delivery quality and pace.
-- **Saurabh Gupta** – Advised on ML pipeline design, clarified technical challenges, and set clear milestone objectives.
+
+- **Jenna Hunte** – Provided thoughtful weekly feedback, timeline guidance, and steady mentorship that helped us stay organized, focused, and confident throughout the project.  
+- **Saurabh Gupta** – Offered clear direction on the ML pipeline, helped us navigate technical challenges, and set meaningful milestone goals. He also worked with others at American Express to host this challenge and make available a carefully designed synthetic dataset that reflects real-world financial scenarios, allowing us to work on problems that feel meaningful and practical.
+
+*We are truly grateful for all the support and time invested in helping us grow through this project!* :)
