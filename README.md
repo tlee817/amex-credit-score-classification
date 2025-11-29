@@ -102,7 +102,7 @@ project_root/data/test_clean.csv
 ### Run the Streamlit App
 
 ```bash
-streamlit run app.py
+streamlit run Home.py
 ```
 
 ## Troubleshooting: XGBoost on macOS
