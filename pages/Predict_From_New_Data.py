@@ -1,9 +1,6 @@
 import streamlit as st
-import joblib
 import numpy as np
 import pandas as pd
-import gdown
-import os
 from utils import download_model, load_model_and_features
 
 # --- HELPER ----
