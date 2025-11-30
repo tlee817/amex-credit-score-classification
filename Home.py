@@ -44,7 +44,7 @@ with col1:
         st.markdown(
             "<div style='text-align:center'>"
             "<h3>📁 Predict From Existing Data</h3>"
-            "<p>Upload a dataset and classify multiple customers at once.</p>"
+            "<p>Search existing customers and predict their credit scores</p>"
             "</div>",
             unsafe_allow_html=True
         )
@@ -57,7 +57,7 @@ with col2:
         st.markdown(
             "<div style='text-align:center'>"
             "<h3>📝 Predict From New Data</h3>"
-            "<p>Manually enter one customer's financial information.</p>"
+            "<p>Manually enter a new customer's financial information to predict credit score</p>"
             "</div>",
             unsafe_allow_html=True
         )

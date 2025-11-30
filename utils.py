@@ -5,7 +5,7 @@ import pandas as pd
 import streamlit as st
 
 
-FILE_ID_MODEL = "106e2YXB3MebGkndVCpJaqU7BYSfDMAN9"
+FILE_ID_MODEL = "1jsXLIOLQVsWAuryKWQUKcxvW2ig839lI"
 FILE_ID_FEATS = "1OmP2n47KFjQ7iRMaRl6BN8GKXmVPkjfo"
 MODEL_PATH = "assets/final_model.pkl"
 FEAT_PATH  = "assets/final_features.csv"
