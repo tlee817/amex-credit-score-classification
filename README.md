@@ -27,7 +27,8 @@ This project aims to develop a supervised machine learning model that classifies
 
 ![GUI Demo](assets/demo_video.gif)
 
-[Click here for full demo video](https://youtu.be/fZO_7D8GT_8)
+[Click here for full demo video](https://youtu.be/XGHOjcJLzW0)
+
 [Try out our app: ]()
 
 ### Disclaimer
