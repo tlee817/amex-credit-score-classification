@@ -9,7 +9,7 @@
 |               | @              | Model evaluation, performance analysis, results interpretation           |
 |               | @              | Model evaluation, performance analysis, results interpretation           |
 |               | @              | Model evaluation, performance analysis, results interpretation           |
-|               | @              | Model evaluation, performance analysis, results interpretation           |
+| Ellen Chen    | @echen078      | Data preprocessing, model training & evaluation (Random Forest)          |
 | Shizuka Takao | @shizuka-takao | Data preprocessing, model training (XGBoost), implementing Streamlit App |
 
 ## 🎯 **Project Highlights**
