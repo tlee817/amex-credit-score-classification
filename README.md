@@ -27,7 +27,7 @@ This project aims to develop a supervised machine learning model that classifies
 
 ![GUI Demo](assets/demo_video.gif)
 
-[Click here for full demo video](https://youtu.be/XGHOjcJLzW0)
+[Click here for full demo video](https://youtu.be/R5pYUYfXd0k)
 
 [Try out our app: ](https://tlee817-amex-credit-score-classification-app-deployment-xhosro.streamlit.app/)
 
