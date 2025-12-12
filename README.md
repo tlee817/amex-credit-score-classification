@@ -7,10 +7,10 @@
 |               | @              | Model evaluation, performance analysis, results interpretation           |
 |               | @              | Model evaluation, performance analysis, results interpretation           |
 |               | @              | Model evaluation, performance analysis, results interpretation           |
-|               | @              | Model evaluation, performance analysis, results interpretation           |
-| Grace Yan     | @graceshawyan  | Data preprocessing, model evaluation (XGBoost), GitHub Actions CI/CD     |
-| Ellen Chen    | @echen078      | Data preprocessing, model training & evaluation (Random Forest)          |
-| Shizuka Takao | @shizuka-takao | Data preprocessing, model training (XGBoost), implementing Streamlit App |
+|Nadia Ghanizada| @nadiazada     | Data preprocessing, model training & evaluation (Random Forest)          |
+|Grace Yan      | @graceshawyan  | Data preprocessing, model evaluation (XGBoost), GitHub Actions CI/CD     |
+|Ellen Chen     | @echen078      | Data preprocessing, model training & evaluation (Random Forest)          |
+|Shizuka Takao  | @shizuka-takao | Data preprocessing, model training (XGBoost), implementing Streamlit App |
 
 ## 🎯 **Project Highlights**
 
