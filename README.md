@@ -5,7 +5,7 @@
 | Name            | GitHub Handle  | Contribution                                                             |
 | --------------- | -------------- | ------------------------------------------------------------------------ |
 |                 | @              | Model evaluation, performance analysis, results interpretation           |
-|                 | @              | Model evaluation, performance analysis, results interpretation           |
+| Terry Lee       | @terrylee0817  | Data preprocessing, model training & evaluation (Decision Tree, Random Forest), Model Deployment |
 | Alicia Yu       | @aliiyuu       | Data preprocessing, model evaluation (Neural Network), GitHub Actions CI/CD|
 |Janine Bokingkito| @ja9kyl3       | Data preprocessing, model evaluation (XGBoost & NeuralNetwork)           |
 | Grace Yan       | @graceshawyan  | Data preprocessing, model evaluation (XGBoost), GitHub Actions CI/CD     |
