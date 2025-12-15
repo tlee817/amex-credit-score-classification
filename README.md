@@ -15,7 +15,7 @@
 ## 🎯 **Project Highlights**
 
 - Developed a machine learning model using Random Forest and XGBoost to address credit score classification (Poor / Standard / Good)
-- Achieved validation accuracy ≈0.83, macro F1 ≈0.83, AUC >0.89 (XGBoost) significying clear class separation and reliable model performance
+- Achieved validation accuracy ≈0.83, macro F1 ≈0.83, AUC >0.89 (XGBoost) signifying clear class separation and reliable model performance
 - Evaulated each model by analyzing ROC / PR curves and confusion matrix ensuring performance across different categories
 - Implemented class imbalance mitigation (class weighting / SMOTE), handling outliers, and handling invalid data to ensure data quality
 - Delivered a Streamlit app to serve the trained model and return real‑time class probabilities
@@ -23,7 +23,7 @@
 
 ## 🏗️ **Project Overview**
 
-This project aims to develop a supervised machine learning model that classifies customers into credit score brackets using their historical data. The main goal is to automate the credit score classification process, reducing manual work and ensuring consistent, data-driven assessments.
+This project, in partnership with American Express, aims to develop a supervised machine learning model that classifies customers into credit score brackets using their historical data. The main goal is to automate the credit score classification process, reducing manual work and ensuring consistent, data-driven assessments.
 
 ![GUI Demo](assets/demo_video.gif)
 
@@ -124,8 +124,6 @@ If `brew` is not available, the alternative is to use a conda environment (conda
 pip uninstall -y xgboost
 pip install --no-cache-dir xgboost
 ```
-
-Add this section to help other developers who run into the same macOS XGBoost / libomp issue.
 
 ## 📊 **Data Exploration**
 
